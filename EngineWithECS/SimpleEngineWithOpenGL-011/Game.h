@@ -6,6 +6,8 @@
 #include "Renderer.h"
 #include "Vector2.h"
 #include "Astroid.h"
+#include "ECSManager.h"
+
 using std::vector;
 
 class Game
@@ -23,7 +25,7 @@ public:
 	Game& operator=(Game&&) = delete;
 
 private:
-	Game() : isRunning(true), isUpdatingActors(false) {}
+	Game() : isRunning(true), isUpdatingActors(false) {  }
 
 public:
 	bool initialize();
@@ -46,9 +48,13 @@ private:
 	void update(float dt);
 	void render();
 
+	
+
 	bool isRunning;
 	Window window;
 	Renderer renderer;
+
+	
 
 	bool isUpdatingActors;
 	vector<Actor*> actors;
@@ -56,5 +62,7 @@ private:
 
 	// Game specific
 	vector<Astroid*> astroids;
+
+	std::shared_ptr<ECSManager> ecs;
 };
 

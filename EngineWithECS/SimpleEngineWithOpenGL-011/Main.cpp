@@ -2,6 +2,7 @@
 int main(int argc, char** argv)
 {
 	bool isGameInit = Game::instance().initialize();
+
 	if (isGameInit)
 	{
 		Game::instance().load();

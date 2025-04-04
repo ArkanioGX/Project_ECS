@@ -3,7 +3,6 @@
 #include "Texture.h"
 #include "Maths.h"
 #include "SpriteComponent.h"
-
 #include <SDL_image.h>
 
 Renderer::Renderer() : SDLRenderer(nullptr)
@@ -36,11 +35,6 @@ void Renderer::beginDraw()
 	SDL_RenderClear(SDLRenderer);
 }
 
-void Renderer::draw()
-{
-	drawSprites();
-}
-
 void Renderer::endDraw()
 {
 	SDL_RenderPresent(SDLRenderer);
@@ -53,13 +47,6 @@ void Renderer::drawRect(const Rectangle& rect) const
 	SDL_RenderFillRect(SDLRenderer, &SDLRect);
 }
 
-void Renderer::drawSprites()
-{
-	for (auto sprite : sprites)
-	{
-		sprite->draw(*this);
-	}
-}
 
 void Renderer::drawSprite(const Actor& actor, const Texture& tex, Rectangle srcRect, Vector2 origin, Flip flip) const
 {

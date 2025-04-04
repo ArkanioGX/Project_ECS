@@ -11,13 +11,16 @@
 
 bool Game::initialize()
 {
+	
 	bool isWindowInit = window.initialize();
 	bool isRendererInit = renderer.initialize(window);
+	ecs = std::move(std::make_shared<ECSManager>());
 	return isWindowInit && isRendererInit; // Return bool && bool && bool ...to detect error
 }
 
 void Game::load()
 {
+
 	// Load textures
 	Assets::loadTexture(renderer, "Res\\Ship01.png", "Ship01");
 	Assets::loadTexture(renderer, "Res\\Ship02.png", "Ship02");
@@ -50,9 +53,14 @@ void Game::load()
 	ship->setPosition(Vector2{ 100, 300 });
 	*/
 
-	// Controlled ship
-	Ship* ship = new Ship();
-	ship->setPosition(Vector2{ 100, 300 });
+	unsigned long long ship = ecs->CreateEntity();
+	ecs->CreateTransform2DComponent(ship);
+	Transform2D& shipT2D = ecs->GetComponent<Transform2D>(ship);
+	shipT2D.pos = Vector2(200, 300);
+	shipT2D.rotation = 50;
+	ecs->CreateSpriteComponent(ship, "Ship");
+
+	/*
 
 	// Background
 	// Create the "far back" background
@@ -78,6 +86,7 @@ void Game::load()
 	{
 		new Astroid();
 	}
+	*/
 }
 
 void Game::processInput()
@@ -112,7 +121,10 @@ void Game::processInput()
 void Game::update(float dt)
 {
 	// Update actors 
-	isUpdatingActors = true;
+	ecs->UpdateScene(dt);
+	
+
+	/*isUpdatingActors = true;
 	for(auto actor: actors) 
 	{
 		actor->update(dt);
@@ -138,13 +150,13 @@ void Game::update(float dt)
 	for (auto deadActor : deadActors)
 	{
 		delete deadActor;
-	}
+	}*/
 }
 
 void Game::render()
 {
 	renderer.beginDraw();
-	renderer.draw();
+	ecs->DrawScene();
 	renderer.endDraw();
 }
 
